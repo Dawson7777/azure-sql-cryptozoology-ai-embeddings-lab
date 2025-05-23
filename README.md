@@ -1,0 +1,1 @@
+# azure-sql-cryptozoology-ai-embeddings-lab
