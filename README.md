@@ -1,1 +1,1 @@
-# Buils 2025 Azure SQL Cryptozoology AI Embeddings Lab
+# Build 2025 Azure SQL Cryptozoology AI Embeddings Lab
