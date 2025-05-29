@@ -27,6 +27,7 @@ Welcome to the front lines of cryptozoological discovery-remember, secrecy and s
 - Azure AI Foundry project
 - VS Code with the MSSQL Extension
 - [MSSQL Python Driver](https://github.com/microsoft/mssql-python)
+- Install python libraries via the requirements.txt file
 
 ## Key Learning Objectives
 
