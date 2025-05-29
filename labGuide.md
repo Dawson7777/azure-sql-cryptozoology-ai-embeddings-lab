@@ -1180,18 +1180,15 @@ You can read more about the driver at [**aka.ms/mssql-python**](https://aka.ms/m
 
 	**Click** on the icon.
 
-    > [!ALERT]
+    > [!IMPORTANT]
+    >
     > **If you do not see the icon, or the icon appears and then quickly disappears, try your question again.** 
 
 1. You will see an **Enter password** modal window for your Azure user. 
 
 	![IMAGEScreenshot2025-05-02at2.39.16PM.png](./media/Screenshot2025-05-02at2.39.16PM.png)
 
-1. Use/click in the password field and enter the following password:
-
-	```AzurePassword
-    @lab.CloudPortalCredential(User1).Password
-	```
+1. Use/click in the password field and enter your password:
 
 	![IMAGEScreenshot2025-05-02at2.39.24PM.png](./media/Screenshot2025-05-02at2.39.24PM.png)
 
