@@ -45,3 +45,9 @@ Welcome to the front lines of cryptozoological discovery-remember, secrecy and s
 - Create a chat app on your data using RAG and Azure SQL
 - Securing your data
 - Ledger tables and chat history
+
+## Repository Contents
+
+- lab_files: Contains the files for running the ChainLit app
+- media: The image files for the labGuide
+- labGuide.md: The workshop guide
