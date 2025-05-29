@@ -1,180 +1,12 @@
 # Welcome to Lab 365: Build new AI applications with Azure SQL Database
 
-> [!TIP]
-> **Quick Tips!** 
->
-> 1) *Any text with the ![IMAGEa picture of the type text icon](./media/Screenshot2024-10-21at1.05.39PM.png)iconprefixorthe![IMAGEapictureofthecopycodeicon](./media/Screenshot2024-10-24at10.31.20AM.png) icon can be clicked on and will be typed in the VM for you. Just put your cursor where you want the text to appear and click!*
->
->
-> 2) *For passwords and user accounts, you can use the **Resources** tab just above here for quick lookups if needed*
-> 
->![IMAGEA picture of the tab bar in the skillable VM instructions area on the right of the page](./media/Screenshot2024-10-23at6.55.54AM22.png)
-
-# **Welcome to the Cryptid Research Initiative**
-
-<p align="center">
-<img height="200" src="https://labondemand.blob.core.windows.net/content/lab185964/./media/logo3.png" alt="Centered Image">
-</p>
-
-Welcome, Investigator, to the **Cryptid Research Initiative**-a clandestine alliance of experts, explorers, and analysts dedicated to uncovering the world's most elusive beings. As a new member, you are now part of a centuries-old tradition of secret scientific inquiry, where we pursue the truth behind the legends that most dismiss as folklore. Our organization has established a global network of field operatives, local informants, and advanced data analysts, all tasked with researching, cataloging, and monitoring cryptid activity around the world. From the misty forests of the Pacific Northwest to the frozen peaks of the Himalayas, and the shadowed billabongs of the Australian outback, our research spans every continent and culture. You will be granted access to confidential video archives, eyewitness accounts, and analytical data-some gathered at great personal risk-so that you may contribute to the ever-growing body of knowledge. 
-
-**Your pivotal role is to harness advanced artificial intelligence tools to analyze rare video evidence and, together with your colleagues, assemble the most comprehensive database of cryptid encounters ever known.** By applying cutting-edge techniques, your work will help reveal patterns, verify authenticity, and propel our understanding further than ever before. 
-
-Welcome to the front lines of cryptozoological discovery-remember, secrecy and scientific rigor are the cornerstones of our society.
-
-***The unknown awaits!***
-
-# Starting the lab
-
-## Logging into Windows
-
-When the VM starts (after clicking the **Launch** button), use the following password for the Windows OS Admin user:
-
-+++@lab.VirtualMachine(Win11-Pro-Base-VM).Password+++
-
-then, press the **blue arrow** 
-
-![IMAGEA picture of pressing the blue arrow for logging into the VM](./media/Screenshot2024-10-21at1.06.16PM.png)
-
-to the right of the password to log into the VM.
-
-# 1. The Azure Portal
-
-The next section of the workshop you will be browsing pre-created resources.
-
-## Logging into the Azure Portal
-
-1. Once you have logged into the virtual machine, open the Edge browser by double clicking the **Edge Shortcut Icon** on the Windows Desktop.
-
-    ![IMAGEA picture of clicking the Edge browser shortcut on the desktop](./media/Screenshot2025-05-01at9.15.16AM.png)
-
-    or on the **windows taskbar**.
-
-    ![IMAGEScreenshot2025-05-06at1.01.40PM.png](./media/Screenshot2025-05-06at1.01.40PM.png)
-
-1. After the browser starts, you should be on the **Azure Sign In page**.
-
-    ![IMAGEA picture of the Azure sign in page in Edge](./media/Screenshot2025-05-01at9.18.01AM.png)
-
-    If you do not get the **Azure Sign In page** when Edge opens, please navigate to +++https://portal.azure.com+++ by typing it in the URL or by using the link in the bookmarks bar.
-
-    ![IMAGEA picture of clicking on the Azure Portal bookmark](./media/Screenshot2024-11-05at11.05.56AM.png)
-
-1. On the Sign In page, use the following username in the Email, phone, or Skype field:
-
-    > [!TIP]
-    > Remember, you can just click on the following text and it will type it in the VM for you.
-
-	```AzureUserName
-    @lab.CloudPortalCredential(User1).Username
-	```
-
-    ![IMAGEA picture of filling in the username in the Email, phone, or Skype field](./media/Screenshot2024-10-21at1.31.41PM.png)
-
-1. Then, click the **blue Next button** after the username has been entered
-
-    ![IMAGEA picture of clicking the blue Next button after the username has been entered](./media/Screenshot2024-10-21at1.34.33PM.png)
-
-1. Next, use the password field and enter the following password:
-
-    > [!TIP]
-    > Remember, you can just click on the following text and it will type it in the VM for you.
-
-	```AzurePassword
-    @lab.CloudPortalCredential(User1).Password
-	```
-
-    ![IMAGEA picture of using the password field to enter the azure user password](./media/Screenshot2024-10-21at1.34.45PM.png)
-
-1. Then, click the **blue Sign in button** after the password has been entered
-
-    ![IMAGEA picture of clicking the blue Sign in button after the password has been entered](./media/Screenshot2024-10-21at1.34.54PM.png)
-
-1. For the next dialog window, select the **Blue Yes Button** so that you can stay logged into Azure without having to reenter the username and password.
-
-    ![IMAGEA picture of selecting the Blue Yes Button so that you can stay logged into Azure without having to reenter the username and password](./media/Screenshot2024-10-21at1.40.31PM.png)
-
-    You may get a Welcome to Azure page. If so, just click **Cancel** on the bottom right of the page.
-
-    ![IMAGEA picture of clicking Cancel on the bottom right of the Welcome to Azure page](./media/Screenshot2024-10-21at1.42.45PM.png)
-
-1. You are now logged into Azure!
-
-    ![IMAGEA picture of the azure portal home page](./media/Screenshot2024-10-21at1.46.09PM.png)
-
-## Azure Resources
-
-1. While on the **Azure Portal Home Page**, find the **View all resources button** in the middle of the page. **Click** on this button.
-
-    ![IMAGEA picture of clicking on the View all resources button in the middle of the page](./media/Screenshot2024-10-21at1.47.39PM.png)
-
-1. On the following page, you will see **7 pre-created resources** for you to use in the lab. An Azure SQL Server, a SQL Database, and an Azure OpenAI instance with 2 deployed models (one for creating embeddings and one to use for our chat application), a storage account, a key vault, an Azure AI hub, and an Azure AI project.
-
-    ![IMAGEA picture of the three pre-created resources in Azure. A SQL server, a SQL database, and an Azure OpenAI instance.](./media/Screenshot2025-05-01at9.24.47AM.png)
-
-    > [!WARNING]
-    > **What If Not All Resources Are Showing Up?**
-    >
-    > **If you don't see all 7 resources, they may still be in the process of creation.**
-    > 
-    > **Wait a minute or 2 and click the refresh button.** 
-
-### Deployed AI Models
-
-1. While viewing **all resources** in the account, find the **Azure AI Project**. It will be named **build25proj@lab.LabInstance.Id**.
-
-    > [!NOTE]
-    > **Your lab project ID will be different than the one in this image.**
-
-	![IMAGEScreenshot2025-05-06at12.45.57PM.png](./media/Screenshot2025-05-06at12.45.57PM.png)
-
-1. **Click** on the project name.
-
-	![IMAGEScreenshot2025-05-06at12.48.05PM.png](./media/Screenshot2025-05-06at12.48.05PM.png)
-
-1. On the AI Project details page, click on the **blue Launch studio button** in the **Start building in Azure AI Foundry** section.
-
-	![IMAGEScreenshot2025-05-06at12.48.20PM.png](./media/Screenshot2025-05-06at12.48.20PM.png)
-
-1. When the **Explore and experiment** modal window pops up, close it by clicking the **close button** in the lower right corner.
-
-	![IMAGEScreenshot2025-05-06at1.05.19PM.png](./media/Screenshot2025-05-06at1.05.19PM.png)
-
-1. On the **left side** of the **Azure AI Foundry project page**, find the **Models + endpoints** menu item in the **My assets** section.
-
-	![IMAGEScreenshot2025-05-06at12.51.31PM.png](./media/Screenshot2025-05-06at12.51.31PM.png)
-
-1. Then, **click** on the **Models + endpoints** menu item.
-
-	![IMAGEScreenshot2025-05-06at12.51.31PMcopy.png](./media/Screenshot2025-05-06at12.51.31PMcopy.png)
-
-1. On the **Manage deployments of your models and services** page, you should see 2 sets of 2 models deployed. Both connections should have a **gpt-4o** and **text-embedding-ada-002** deployment.
-
-	![IMAGEScreenshot2025-05-06at12.51.47PM.png](./media/Screenshot2025-05-06at12.51.47PM.png)
-
-    > [!WARNING]
-    > **If you are missing any deployments, please let a proctor or the instructor know.**
-    >
-    > **You may also go to the [Troubleshooting](#troubleshooting) docs at the bottom of the these instructions and run through the ["No Models? No Problem"](#no-models-no-problem) section to deploy them yourself.**
-    >
-
-1. To make the next sections a bit more navigation friendly, **click the zoom/maximize/window button** in the **upper right corner** of the browser window.
-
-    ![IMAGEA picture of clicking the zoom/maximize/window button in the upper right corner of the browser window ](./media/Screenshot2024-11-01at9.16.01AM.png)
-
-# 2. Connect to the free Azure SQL Database with Visual Studio Code
+# 1. Connect to the free Azure SQL Database with Visual Studio Code
 
 ## **Using Visual Studio Code**
 
 Visual Studio Code will be used for working with the database.
 
-1. Back on the Windows desktop, double click the **Visual Studio Code icon** on the right side.
-
-    ![IMAGEA picture of double clicking the Visual Studio Code icon on the right side of the desktop to open the application](./media/Screenshot2025-05-01at9.30.14AM.png)
-
-	or in the **windows Taskbar**.
-
-    ![IMAGEScreenshot2025-05-06at1.08.34PM.png](./media/Screenshot2025-05-06at1.08.34PM.png)
+1. Launch **Visual Studio Code**.
 
 1. When Visual Studio Code opens, click the **SQL Extension** on the left side.
 
@@ -200,24 +32,15 @@ Visual Studio Code will be used for working with the database.
 
 	![IMAGEScreenshot2025-05-01at9.45.20AMcopy.png](./media/Screenshot2025-05-01at9.45.20AMcopy.png)
 
-    use the following username in the Email, phone, or Skype field:
+    use your Azure Portal username in the Email, phone, or Skype field:
 
-	```AzureUserName
-    @lab.CloudPortalCredential(User1).Username
-	```
-	
     ![IMAGEScreenshot2025-05-01at9.45.20AM.png](./media/Screenshot2025-05-01at9.45.20AM.png)
-
 
 1. Then, click the **blue Next button** after the username has been entered
 
 	![IMAGEScreenshot2025-05-01at9.49.04AM.png](./media/Screenshot2025-05-01at9.49.04AM.png)
 
-1. On the next step/dialog box, use the **password field** and enter the following password:
-
-	```AzurePassword
-    @lab.CloudPortalCredential(User1).Password
-	```
+1. On the next step/dialog box, use the **password field** and enter your password:
 
     ![IMAGEA picture of using the password field to enter the azure user password](./media/Screenshot2024-10-21at1.34.45PM.png)
 
@@ -249,7 +72,7 @@ Visual Studio Code will be used for working with the database.
 
 	![IMAGEScreenshot2025-05-01at10.07.23AM.png](./media/Screenshot2025-05-01at10.07.23AM.png)
 
-1. A **browser page** will appear asking you to **Pick an account**. Select the account that is displayed by clicking on it.
+1. A **browser page** will appear asking you to **Pick an account**. Select your account that you want to use by clicking on it.
 
 	![IMAGEScreenshot2025-05-01at10.07.46AM.png](./media/Screenshot2025-05-01at10.07.46AM.png)
 	
@@ -281,7 +104,7 @@ Visual Studio Code will be used for working with the database.
 
 	![IMAGEScreenshot2025-05-01at10.37.40AM.png](./media/Screenshot2025-05-01at10.37.40AM.png)
 	
-# 3. Azure AI Content Understanding
+# 2. Azure AI Content Understanding
 
 Azure AI Content Understanding is a new Generative AI based Azure AI Service, designed to process/ingest content of any types (documents, images, videos, and audio) into a user-defined output format. We will be using it in this lab to analyze a video and have it return data fields we can insert into a database table.
 
@@ -400,8 +223,7 @@ The first step in our quest for cryptid relevancy is to create a table to store 
 
 The next step in the lab is to create database scoped credentials which contain the API Key for using Azure AI Content Understanding by passing the credentials with our REST requests.
 
->[!KNOWLEDGE]
-> Going forward, you can remove the previous code in a query sheet by **highlighting it and pressing delete/backspace** and reuse for the next statement.
+In the following code sections, you will need to fill in the values for **YOUR_AZURE_OPENAPI_KEY_HERE** and **YOUR_AZURE_OPENAPI_ENDPOINT_HERE** with the information from your Azure OpenAI Account.
 
 1. Using an empty query sheet in VS Code, copy and paste the following code:
 
@@ -415,10 +237,10 @@ The next step in the lab is to create database scoped credentials which contain 
     go
 
     -- Create the database scoped credential for Azure AI Content Understanding
-    if not exists(select * from sys.database_scoped_credentials where [name] = '@lab.Variable(openaiApiEndpoint)contentunderstanding/')
+    if not exists(select * from sys.database_scoped_credentials where [name] = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/')
     begin
         create database scoped credential [@lab.Variable(openaiApiEndpoint)contentunderstanding/]
-        with identity = 'HTTPEndpointHeaders', secret = '{"Ocp-Apim-Subscription-Key":"@lab.Variable(openaiApiKey)","Ocp-Apim-Subscription-Region":"westus"}';
+        with identity = 'HTTPEndpointHeaders', secret = '{"Ocp-Apim-Subscription-Key":"YOUR_AZURE_OPENAPI_KEY_HERE","Ocp-Apim-Subscription-Region":"westus"}';
     end
     go
 	```
@@ -460,7 +282,7 @@ The next step in the lab is to create database scoped credentials which contain 
 	**Copy and paste** the following code into an **empty query sheet** in VS Code:
 
     ```SQL
-    declare @url nvarchar(4000) = N'@lab.Variable(openaiApiEndpoint)contentunderstanding/analyzers/cryptidAnalyzer?api-version=2024-12-01-preview';
+    declare @url nvarchar(4000) = N'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/analyzers/cryptidAnalyzer?api-version=2024-12-01-preview';
     declare @payload nvarchar(max) = N'{
         "description": "Cryptid video analyzer",
         "scenario": "videoShot",
@@ -509,7 +331,7 @@ The next step in the lab is to create database scoped credentials which contain 
         @url = @url,
         @method = 'PUT', 
         @payload = @payload,
-        @credential = [@lab.Variable(openaiApiEndpoint)contentunderstanding/],    
+        @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/],    
         @timeout = 230,
         @response = @response output;
 
@@ -535,7 +357,7 @@ The next step in the lab is to create database scoped credentials which contain 
 	**Copy and paste** the following code into an **empty query sheet** in VS Code:
 
 	```SQL
-    declare @url nvarchar(4000) = N'@lab.Variable(openaiApiEndpoint)contentunderstanding/analyzers/cryptidAnalyzer:analyze?api-version=2024-12-01-preview';
+    declare @url nvarchar(4000) = N'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/analyzers/cryptidAnalyzer:analyze?api-version=2024-12-01-preview';
     declare @payload nvarchar(max) = N'{
     "url": "@lab.Variable(sqlServerName)"}';
     declare @ret int, @response nvarchar(max);
@@ -544,7 +366,7 @@ The next step in the lab is to create database scoped credentials which contain 
         @url = @url,
         @method = 'POST', 
         @payload = @payload,
-        @credential = [@lab.Variable(openaiApiEndpoint)contentunderstanding/], 
+        @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/], 
         @timeout = 230,
         @response = @response output;
 
@@ -577,14 +399,7 @@ The next step in the lab is to create database scoped credentials which contain 
     
     ![IMAGEScreenshot2025-05-02at6.12.55AM.png](./media/Screenshot2025-05-02at6.12.55AM.png)
 
-    then **paste** the value into the following text box and **press enter/return**.
-
-    > [!ALERT]
-    > **Paste the job id here and press return/enter -->** @lab.TextBox(jobId)
-
-	**Once you paste the job ID in the field and press enter/return, continue with the next step.**
-
-1. Did you remember to **paste** the **job id** into the above text field?
+    then **paste** the value into the following code section where is says **PASTE_JOB_ID_HERE**.
 
 1. What did **Content Understanding** just do?
 
@@ -598,23 +413,20 @@ The next step in the lab is to create database scoped credentials which contain 
 
     Remember, we provided the Field Extraction with the custom fields in a previous step when we created the Cryptid Video Analyzer. Now to get the results.
 
-    > [!ALERT]
-    > **Be sure to wait a minute or 2 for the video analyzer to finish it's job. We have many videos being analyzed from everyone in the class.**
+    **Be sure to wait a minute or 2 for the video analyzer to finish it's job.**
 
 1. As hinted at, our next REST call will **get the results of the video analysis and insert them into our cryptid videos table**.
 
-	**My job id is @lab.Variable(jobId). <-- did you copy and paste the job id into the above text field?**
-
-	**Copy and paste** the following code into an **empty query sheet** in VS Code (if you did not paste the job id into the above field, this request will fail):
+	**Copy and paste** the following code into an **empty query sheet** in VS Code (if you did not paste the job id into the next code section, this request will fail):
 
 	```SQL
-    declare @url nvarchar(4000) = N'@lab.Variable(openaiApiEndpoint)contentunderstanding/analyzers/cryptidAnalyzer/results/@lab.Variable(jobId)?api-version=2024-12-01-preview';
+    declare @url nvarchar(4000) = N'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/analyzers/cryptidAnalyzer/results/PASTE_JOB_ID_HERE?api-version=2024-12-01-preview';
     declare @ret int, @response nvarchar(max);
 
     exec @ret = sp_invoke_external_rest_endpoint
         @url = @url,
         @method = 'GET', 
-        @credential = [@lab.Variable(openaiApiEndpoint)contentunderstanding/],    
+        @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/],    
         @timeout = 230,
         @response = @response output;
 
@@ -651,7 +463,7 @@ The next step in the lab is to create database scoped credentials which contain 
 
 	![IMAGEScreenshot2025-05-01at1.52.07PM.png](./media/Screenshot2025-05-01at1.52.07PM.png)
 
-    > [!ALERT]
+    > [!NOTE]
     > If you get the following error:
     > 
     >  ***"Msg 515, Level 16, State 2, Line 15
@@ -685,7 +497,7 @@ The next step in the lab is to create database scoped credentials which contain 
 
 	![IMAGEScreenshot2025-05-01at2.09.51PM.png](./media/Screenshot2025-05-09at8.39.03AM.png)
 
-# 4. Creating embeddings for relational data
+# 3. Creating embeddings for relational data
 
 ## Understanding embeddings in Azure OpenAI
 

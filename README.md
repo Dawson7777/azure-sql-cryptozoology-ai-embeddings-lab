@@ -11,3 +11,35 @@ Welcome, Investigator, to the **Cryptid Research Initiative**-a clandestine alli
 **Your pivotal role is to harness advanced artificial intelligence tools to analyze rare video evidence and, together with your colleagues, assemble the most comprehensive database of cryptid encounters ever known.** By applying cutting-edge techniques, your work will help reveal patterns, verify authenticity, and propel our understanding further than ever before. 
 
 Welcome to the front lines of cryptozoological discovery-remember, secrecy and scientific rigor are the cornerstones of our society.
+
+**Lab Guide is [here](./labGuide.md).**
+
+## Prerequisites
+
+- Azure SQL Server and Azure SQL Database (Free offering will work well)
+    - Database named "SampleDB" with the Adventureworks sample data loaded
+- Azure blob storage
+- Azure key vault
+- Azure OpenAI
+    - gpt-4o
+    - text-embedding-ada-002
+- Azure AI Foundry hub
+- Azure AI Foundry project
+- VS Code with the MSSQL Extension
+
+## Key Learning Objectives
+
+- Understand new AI features in the SQL database
+- Create embeddings with relational data
+- Assess similarity searching vs text only
+- Design an AI application with relational data
+- Implement database security best practices
+
+## Lab Outline
+
+- Connecting to your free Azure SQL Database
+- Getting started with REST in the database and Azure AI Content Understanding
+- Creating embeddings for relational data with Azure OpenAI
+- Create a chat app on your data using RAG and Azure SQL
+- Securing your data
+- Ledger tables and chat history
