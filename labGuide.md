@@ -223,7 +223,10 @@ The first step in our quest for cryptid relevancy is to create a table to store 
 
 The next step in the lab is to create database scoped credentials which contain the API Key for using Azure AI Content Understanding by passing the credentials with our REST requests.
 
-In the following code sections, you will need to fill in the values for **YOUR_AZURE_OPENAPI_KEY_HERE** and **YOUR_AZURE_OPENAPI_ENDPOINT_HERE** with the information from your Azure OpenAI Account.
+> [!IMPORTANT]
+>
+> In the following code sections, you will need to fill in the values for **YOUR_AZURE_OPENAPI_KEY_HERE** and **YOUR_AZURE_OPENAPI_ENDPOINT_HERE** with the information from your Azure OpenAI Account.
+>
 
 1. Using an empty query sheet in VS Code, copy and paste the following code:
 
@@ -507,6 +510,11 @@ Embeddings created and stored in the Azure SQL Database during this lab will pow
 
 ### Using T-SQL to create database scoped credentials (again) and testing a gpt-4o endpoint
 
+> [!IMPORTANT]
+>
+> In the following code sections, you will need to fill in the values for **YOUR_AZURE_OPENAPI_KEY_HERE** and **YOUR_AZURE_OPENAPI_ENDPOINT_HERE** with the information from your Azure OpenAI Account.
+>
+
 1. This next section of code will first create database scoped credentials for using our gtp-4o and embeddings endpoints but also test the connectivity between Azure OpenAI and the database. 
 
 	**Copy and paste** the following code into an **empty query sheet** in VS Code:
@@ -517,14 +525,14 @@ Embeddings created and stored in the Azure SQL Database during this lab will pow
     if not exists(select * from sys.database_scoped_credentials where [name] = 'https://build25ai@lab.LabInstance.Id.openai.azure
     /')
     begin
-        create database scoped credential [https://build25ai@lab.LabInstance.Id.openai.azure.com/]
-        with identity = 'HTTPEndpointHeaders', secret = '{"api-key":"@lab.Variable(openaiApiKey)"}';
+        create database scoped credential [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/]
+        with identity = 'HTTPEndpointHeaders', secret = '{"api-key":YOUR_AZURE_OPENAPI_KEY_HERE"}';
     end
     go
 
 	-- Test the connection by asking gpt-4o to tell us a joke (excellent use of AI)
 
-    declare @url nvarchar(4000) = N'https://build25ai@lab.LabInstance.Id.openai.azure.com/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview';
+    declare @url nvarchar(4000) = N'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/openai/deployments/gpt-4o/chat/completions?api-version=2025-01-01-preview';
     declare @payload nvarchar(max) = N'{"messages":[{"role":"system","content":"You are an expert joke teller."},                                   
                                        {"role":"system","content":"tell me a joke about a llama walking into a bar"}]}'
     declare @ret int, @response nvarchar(max);
@@ -533,7 +541,7 @@ Embeddings created and stored in the Azure SQL Database during this lab will pow
         @url = @url,
         @method = 'POST', 
         @payload = @payload,
-        @credential = [https://build25ai@lab.LabInstance.Id.openai.azure.com/],    
+        @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/],    
         @timeout = 230,
         @response = @response output;
         
@@ -561,7 +569,7 @@ Next, lets test our embeddings endpoint using the same database scoped credentia
 	**Copy and paste** the following code into an **empty query sheet** in VS Code:
 
     ```SQL
-    declare @url nvarchar(4000) = N'https://build25ai@lab.LabInstance.Id.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2024-06-01';
+    declare @url nvarchar(4000) = N'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/openai/deployments/text-embedding-ada-002/embeddings?api-version=2024-06-01';
     declare @message nvarchar(max) = 'Hello World!';
     declare @payload nvarchar(max) = N'{"input": "' + @message + '"}';
 
@@ -571,7 +579,7 @@ Next, lets test our embeddings endpoint using the same database scoped credentia
         @url = @url,
         @method = 'POST',
         @payload = @payload,
-        @credential = [https://build25ai@lab.LabInstance.Id.openai.azure.com/],
+        @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/],
         @timeout = 230,
         @response = @response output;
 
@@ -790,7 +798,7 @@ To alter our CryptozoologyVideos table, we are going to use the Table Designer f
     )
     AS
     BEGIN
-    declare @url varchar(max) = 'https://build25ai@lab.LabInstance.Id.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2024-06-01';
+    declare @url varchar(max) = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/openai/deployments/text-embedding-ada-002/embeddings?api-version=2024-06-01';
     declare @payload nvarchar(max) = json_object('input': @input_text);
     declare @response nvarchar(max);
     declare @retval int;
@@ -800,7 +808,7 @@ To alter our CryptozoologyVideos table, we are going to use the Table Designer f
         exec @retval = sp_invoke_external_rest_endpoint
             @url = @url,
             @method = 'POST',
-            @credential = [https://build25ai@lab.LabInstance.Id.openai.azure.com/],
+            @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/],
             @payload = @payload,
             @response = @response output;
     end try
@@ -982,7 +990,7 @@ You will be using this function in some upcoming samples as well as in the RAG c
     | Brosno Dragon | The Brosno Dragon is a lake monster from western Russia, described as a dragon or aquatic reptile up to 15 meters long. Myths date to medieval times, and stories mention drownings and attacks. Natural explanations include gas bubbles or large fish. | 0.17421464030694556 |
     | Loch Ness Monster | The Loch Ness Monster, or Nessie, is a legendary aquatic cryptid said to inhabit Loch Ness, Scotland. It is often described as having a long neck with several humps above the surface, and dates back to 6th-century stories. Despite many sightings and some photos, scientific evidence is lacking, and theories range from misidentified animals to floating logs. | 0.17477385630762465 |
 
-# 5. Creating a chat application using RAG on relational data
+# 4. Creating a chat application using RAG on relational data
 
 In this section of the lab, you will be deploying a RAG application that uses embeddings, vector similarity search, relational data, and a large language model to craft an answer to someone searching our cryptid research database. In essence, putting all the pieces together in the previous sections to create a working chat application.
 
@@ -1096,15 +1104,22 @@ You can read more about the driver at [**aka.ms/mssql-python**](https://aka.ms/m
 
 1. Copy and paste the following parameters into the .env file and **save it**.
 
-    > [!KNOWLEDGE]
+    > [!NOTE]
+    >
     > **The database connection string is used with the new mssql-python driver!** 
+    >
+
+    > [!IMPORTANT]
+    >
+    > **You will need to fill in the YOUR_AZURE_SQL_DATABASE_SERVER and YOUR_AZURE_USERNAME in the following code**
+    >
 
     ```ENV
-    AZURE_OPENAI_ENDPOINT="https://build25ai@lab.LabInstance.Id.openai.azure.com/"
+    AZURE_OPENAI_ENDPOINT="https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/"
     AZURE_OPENAI_API_KEY="@lab.Variable(openaiApiKey)"
     AZURE_OPENAI_CHAT_DEPLOYMENT="gpt-4o"
     AZURE_OPENAI_API_VERSION="2024-06-01"
-    MSSQL_PYTHON_DRIVER_CONNECTION_STRING="Server=tcp:azuresql@lab.LabInstance.Id.database.windows.net,1433;Database=SampleDB;Uid=@lab.CloudPortalCredential(User1).Username;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;Authentication=ActiveDirectoryInteractive;"
+    MSSQL_PYTHON_DRIVER_CONNECTION_STRING="Server=tcp:YOUR_AZURE_SQL_DATABASE_SERVER,1433;Database=SampleDB;Uid=YOUR_AZURE_USERNAME;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;Authentication=ActiveDirectoryInteractive;"
     ```
 
     ![IMAGEScreenshot2025-05-02at2.32.44PM.png](./media/Screenshot2025-05-02at2.32.44PM.png)
@@ -1289,7 +1304,7 @@ In this section, we are going to create a limited privilege web application user
 
     GRANT EXECUTE ANY EXTERNAL ENDPOINT TO [aiuser];
 
-    GRANT REFERENCES ON DATABASE SCOPED CREDENTIAL :: [https://build25ai@lab.LabInstance.Id.openai.azure.com/] TO [aiuser];
+    GRANT REFERENCES ON DATABASE SCOPED CREDENTIAL :: [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/] TO [aiuser];
     ```
 
 1. **Click the run/Execute Query button** on the query sheet.
@@ -1308,12 +1323,17 @@ In this section, we are going to create a limited privilege web application user
 
 1. Replace the values in the .env files by highlighting/selecting all the text and then copying and pasting the following parameters into the .env file. Then **save it**.
 
+    > [!IMPORTANT]
+    >
+    > **You will need to fill in the YOUR_AZURE_SQL_DATABASE_SERVER in the following code**
+    >
+
     ```ENV
-    AZURE_OPENAI_ENDPOINT="https://build25ai@lab.LabInstance.Id.openai.azure.com/"
+    AZURE_OPENAI_ENDPOINT="https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/"
     AZURE_OPENAI_API_KEY="@lab.Variable(openaiApiKey)"
     AZURE_OPENAI_CHAT_DEPLOYMENT="gpt-4o"
     AZURE_OPENAI_API_VERSION="2024-06-01"
-    MSSQL_PYTHON_DRIVER_CONNECTION_STRING="Server=tcp:azuresql@lab.LabInstance.Id.database.windows.net,1433;Database=SampleDB;Uid=aiuser;Pwd=kAgH7e!0D$#;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
+    MSSQL_PYTHON_DRIVER_CONNECTION_STRING="Server=tcp:YOUR_AZURE_SQL_DATABASE_SERVER,1433;Database=SampleDB;Uid=aiuser;Pwd=kAgH7e!0D$#;Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
     ```
 
 1. **Save** the file with either **Ctrl-S** or use the **Save menu item**.
