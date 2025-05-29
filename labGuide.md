@@ -1147,6 +1147,12 @@ You can read more about the driver at [**aka.ms/mssql-python**](https://aka.ms/m
 1. Once in the terminal, start up the application with the following command in the Visual Studio Code terminal session:
 
     ```BASH
+    cd lab_files
+    ```
+
+    then
+
+    ```BASH
     chainlit run app.py
     ```
 
