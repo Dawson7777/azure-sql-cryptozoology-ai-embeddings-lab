@@ -524,8 +524,7 @@ Embeddings created and stored in the Azure SQL Database during this lab will pow
 
     ```SQL
     -- Create the database scoped credential for Azure OpenAI
-    if not exists(select * from sys.database_scoped_credentials where [name] = 'https://build25ai@lab.LabInstance.Id.openai.azure
-    /')
+    if not exists(select * from sys.database_scoped_credentials where [name] = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/')
     begin
         create database scoped credential [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/]
         with identity = 'HTTPEndpointHeaders', secret = '{"api-key":YOUR_AZURE_OPENAPI_KEY_HERE"}';
@@ -788,60 +787,25 @@ To alter our CryptozoologyVideos table, we are going to use the Table Designer f
 
 ## Creating embeddings on the cryptid data
 
-1. Next, we are going to use the **External REST Endpoint Invocation procedure (sp_invoke_external_rest_endpoint)** in a **stored procedure** that will create embeddings for text we supply as an input. 
+1. Next, we are going to create an **External Model** that will use an Azure OpenAI embeddings endpoint. This model removes the need for custom stored procedures for generating embeddings combined with the **AI_GENERATE_EMBEDDINGS** function.
 
 	**Copy and paste** the following code into an **empty query sheet** in VS Code:
 
     ```SQL
-    create or alter procedure dbo.create_embeddings
-    (
-        @input_text nvarchar(max),
-        @embedding vector(1536) output
-    )
-    AS
-    BEGIN
-    declare @url varchar(max) = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/openai/deployments/text-embedding-ada-002/embeddings?api-version=2024-06-01';
-    declare @payload nvarchar(max) = json_object('input': @input_text);
-    declare @response nvarchar(max);
-    declare @retval int;
 
-    -- Call to Azure OpenAI to get the embedding of the search text
-    begin try
-        exec @retval = sp_invoke_external_rest_endpoint
-            @url = @url,
-            @method = 'POST',
-            @credential = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/],
-            @payload = @payload,
-            @response = @response output;
-    end try
-    begin catch
-        select 
-            'SQL' as error_source, 
-            error_number() as error_code,
-            error_message() as error_message
-        return;
-    end catch
-    if (@retval != 0) begin
-        select 
-            'OPENAI' as error_source, 
-            json_value(@response, '$.result.error.code') as error_code,
-            json_value(@response, '$.result.error.message') as error_message,
-            @response as error_response
-        return;
-    end
-    -- Parse the embedding returned by Azure OpenAI
-    declare @json_embedding nvarchar(max) = json_query(@response, '$.result.data[0].embedding');
-
-    -- Convert the JSON array to a vector and set return parameter
-    set @embedding = CAST(@json_embedding AS VECTOR(1536));
-    END;
+    CREATE EXTERNAL MODEL MyAzureOpenAiModel
+    WITH ( 
+        LOCATION = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/openai/deployments/text-embedding-ada-002/embeddings?api-version=2023-05-15',
+        API_FORMAT = 'Azure OpenAI',
+        MODEL_TYPE = EMBEDDINGS,
+        MODEL = 'text-embedding-ada-002',
+        CREDENTIAL = [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/]
+    );
     ```
 
-1. **Click the run/Execute Query button** the run button on the query sheet to create the procedure in the database.
+1. **Click the run/Execute Query button** the run button on the query sheet to create the model in the database.
 
-	![IMAGEScreenshot2025-05-02at7.15.59AM.png](./media/Screenshot2025-05-02at7.15.59AM.png)
-
-1. We have our embeddings procedure, now we can use it with the CryptozoologyVideos table. The embeddings vector array will consist of all the columns in the table that will be concatenated together and then sent to the embeddings endpoint. The resulting vector array will then be inserted into our vector column. The text sent to the endpoint will also be stored in the chunk column.
+1. We have our embeddings model, now we can use it with the CryptozoologyVideos table. The embeddings vector array will consist of all the columns in the table that will be concatenated together and then sent to the embeddings endpoint via the **AI_GENERATE_EMBEDDINGS** function. The resulting vector array will then be inserted into our vector column. The text sent to the endpoint will also be stored in the chunk column.
 
 	Copy and paste the following T-SQL in a blank query editor in VS Code to create embeddings for all products in the Products table:
 
@@ -850,7 +814,6 @@ To alter our CryptozoologyVideos table, we are going to use the Table Designer f
     DROP TABLE IF EXISTS #MYTEMP 
     DECLARE @VideoID int
     declare @text nvarchar(max);
-    declare @vector vector(1536);
     SELECT * INTO #MYTEMP FROM [dbo].[CryptozoologyVideos] 
     SELECT @VideoID = VideoID FROM #MYTEMP
     SELECT TOP(1) @VideoID = VideoID FROM #MYTEMP
@@ -866,16 +829,13 @@ To alter our CryptozoologyVideos table, we are going to use the Table Designer f
                             'ThreatLevel: ' + ThreatLevel
                     FROM [dbo].[CryptozoologyVideos] 
                     WHERE VideoID = @VideoID);
-        exec dbo.create_embeddings @text, @vector output;
-        update [dbo].[CryptozoologyVideos] set [embeddings] = @vector, [chunk] = @text where VideoID = @VideoID;
+        update [dbo].[CryptozoologyVideos] set [embeddings] = AI_GENERATE_EMBEDDINGS(@text USE MODEL MyAzureOpenAiModel), [chunk] = @text where VideoID = @VideoID;
         DELETE FROM #MYTEMP WHERE VideoID = @VideoID
         SELECT TOP(1) @VideoID = VideoID FROM #MYTEMP
     END
     ```
 
 1. **Click the run/Execute Query button** on the query sheet.
-
-	![IMAGEScreenshot2025-05-04at2.59.26PM.png](./media/Screenshot2025-05-04at2.59.26PM.png)
 
 1. To ensure all the embeddings were created, run the following code in a blank query editor in VS Code: 
 
@@ -919,9 +879,8 @@ You will be using this function in some upcoming samples as well as in the RAG c
 
     ```SQL
     declare @search_text nvarchar(max) = 'Which cryptids are prone to violence?'
-    declare @search_vector vector(1536)
-    exec dbo.create_embeddings @search_text, @search_vector output;
-    SELECT TOP(5) CryptidName, ThreatLevel, VideoDescription, vector_distance('cosine', @search_vector, embeddings) AS distance
+    SELECT TOP(5) CryptidName, ThreatLevel, VideoDescription, 
+        vector_distance('cosine', CAST(AI_GENERATE_EMBEDDINGS(@search_text USE MODEL MyAzureOpenAiModel) AS VECTOR(1536)), embeddings) AS distance
     FROM [dbo].[CryptozoologyVideos]
     ORDER BY distance
     ```
@@ -946,9 +905,8 @@ You will be using this function in some upcoming samples as well as in the RAG c
 
     ```SQL
     declare @search_text nvarchar(max) = 'I am planning a trip to the pacific northwest, what cryptids will be there?'
-    declare @search_vector vector(1536)
-    exec dbo.create_embeddings @search_text, @search_vector output;
-    SELECT TOP(5) CryptidName, ThreatLevel, Location, vector_distance('cosine', @search_vector, embeddings) AS distance
+    SELECT TOP(5) CryptidName, ThreatLevel, Location, 
+        vector_distance('cosine', CAST(AI_GENERATE_EMBEDDINGS(@search_text USE MODEL MyAzureOpenAiModel) AS VECTOR(1536)), embeddings) AS distance
     FROM [dbo].[CryptozoologyVideos]
     ORDER BY distance
     ```
@@ -973,9 +931,8 @@ You will be using this function in some upcoming samples as well as in the RAG c
 
     ```SQL
     declare @search_text nvarchar(max) = 'Which cryptids are aquatic reptiles?'
-    declare @search_vector vector(1536)
-    exec dbo.create_embeddings @search_text, @search_vector output;
-    SELECT TOP(5) CryptidName, CryptidLore, vector_distance('cosine', @search_vector, embeddings) AS distance
+    SELECT TOP(5) CryptidName, CryptidLore,
+        vector_distance('cosine', CAST(AI_GENERATE_EMBEDDINGS(@search_text USE MODEL MyAzureOpenAiModel) AS VECTOR(1536)), embeddings) AS distance
     FROM [dbo].[CryptozoologyVideos]
     ORDER BY distance
     ```
@@ -1027,9 +984,6 @@ You can read more about the driver at [**aka.ms/mssql-python**](https://aka.ms/m
     @min_similarity decimal(19,16) = 0.60
     as
     if (@text is null) return;
-    declare @retval int, @qv vector(1536);
-    exec @retval = dbo.create_embeddings @text, @qv output;
-    if (@retval != 0) return;
     with vector_results as (
     SELECT 
             CryptidName,
@@ -1040,7 +994,7 @@ You can read more about the driver at [**aka.ms/mssql-python**](https://aka.ms/m
             VideoDescription,
             CryptidLore,
             ThreatLevel,
-            vector_distance('cosine', @qv, embeddings) AS distance
+            vector_distance('cosine', CAST(AI_GENERATE_EMBEDDINGS(@text USE MODEL MyAzureOpenAiModel) AS VECTOR(1536)), embeddings) AS distance
     FROM
         [dbo].[CryptozoologyVideos])
     select TOP(@top) CryptidName, TimeOfDay, Location, Weather, VideoSetting, VideoDescription, CryptidLore, ThreatLevel, distance
@@ -1511,9 +1465,6 @@ Prompt data is something that companies and organizations will want to preserve 
     @min_similarity decimal(19,16) = 0.60
     as
     if (@text is null) return;
-    declare @retval int, @qv vector(1536);
-    exec @retval = dbo.create_embeddings @text, @qv output;
-    if (@retval != 0) return;
     with vector_results as (
     SELECT 
             CryptidName,
@@ -1524,7 +1475,7 @@ Prompt data is something that companies and organizations will want to preserve 
             VideoDescription,
             CryptidLore,
             ThreatLevel,
-            vector_distance('cosine', @qv, embeddings) AS distance
+            vector_distance('cosine', CAST(AI_GENERATE_EMBEDDINGS(@text USE MODEL MyAzureOpenAiModel) AS VECTOR(1536)), embeddings) AS distance
     FROM
         [dbo].[CryptozoologyVideos])
     select TOP(@top) CryptidName, TimeOfDay, Location, Weather, VideoSetting, VideoDescription, CryptidLore, ThreatLevel, distance

@@ -524,8 +524,7 @@ Embeddings created and stored in the Azure SQL Database during this lab will pow
 
     ```SQL
     -- Create the database scoped credential for Azure OpenAI
-    if not exists(select * from sys.database_scoped_credentials where [name] = 'https://build25ai@lab.LabInstance.Id.openai.azure
-    /')
+    if not exists(select * from sys.database_scoped_credentials where [name] = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/')
     begin
         create database scoped credential [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/]
         with identity = 'HTTPEndpointHeaders', secret = '{"api-key":YOUR_AZURE_OPENAPI_KEY_HERE"}';
