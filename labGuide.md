@@ -391,8 +391,7 @@ The next step in the lab is to create database scoped credentials which contain 
 
 	| Request return code | HTTP return status code | operation location URL | job id | job status |
     |---------------------|-------------------------|------------------------|--------|------------|
-	| 0 | 202 | https://build25ai.cognitiveservices.azure
-    /.../11111-22222-33333-44444-abcdefg... | 11111-22222-33333-44444-abcdefg | Running |
+	| 0 | 202 | https://build25ai.cognitiveservices.azure/.../11111-22222-33333-44444-abcdefg... | 11111-22222-33333-44444-abcdefg | Running |
 
 	![IMAGEScreenshot2025-05-01at1.37.40PM.png](./media/Screenshot2025-05-01at1.37.40PM.png)
 
