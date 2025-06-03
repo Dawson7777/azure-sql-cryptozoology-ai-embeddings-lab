@@ -1,6 +1,9 @@
 # Welcome to Lab 365: Build new AI applications with Azure SQL Database - SQL Server 2025 Edition
 
-# 1. Connect to the free Azure SQL Database with Visual Studio Code
+# 1. Connect to the SQL Server 2025 Database with Visual Studio Code
+
+> ![NOTE]
+> **The following assumes you have installed SQL Server 2025 locally on a VM with Windows Authentication.**
 
 ## **Using Visual Studio Code**
 
@@ -8,7 +11,7 @@ Visual Studio Code will be used for working with the database.
 
 1. Launch **Visual Studio Code**.
 
-1. When Visual Studio Code opens, click the **SQL Extension** on the left side.
+1. When Visual Studio Code opens, click the **SQL Extension** on the left side. (If not installed, install the *SQL Server (mssql) Extension*.)
 
     ![A picture of clicking Add Connection in the SQL Extension](./media/Screenshot2025-05-01at9.32.42AM.png)
 
@@ -20,81 +23,15 @@ Visual Studio Code will be used for working with the database.
 
     ![IMAGEA picture of the SQL Connection Dialog tab](./media/Screenshot2025-05-01at9.34.53AM.png)
 
-1. Next, for **Input type**, select the **Browse Azure** radio button.
+1. Next, for **Server Name**, enter the SQL Server 2025 server. If using a local VM, use the name of the Windows Server or localhost.
 
-    ![IMAGEA picture of selecting the Browse Azure radio button for input type](./media/Screenshot2025-05-01at9.37.36AM.png)
+1. Check the checkbox for **Trust server certificate**.
 
-1. A Visual Studio Code dialog box will now pop up stating **The extension 'SQL Server (mssql)' wants to sign in using Microsoft.**. Click the **Allow** button. 
+1. Use the dropdown called **Authentication type** and select **Windows AUthentication**
 
-    ![IMAGEA picture of click the Allow button in the Visual Studio Code dialog box ](./media/Screenshot2025-05-01at9.37.45AM.png)
+1. Click the **blue Connect button** on the lower right side.
 
-1. On the **Sign in** dialog window
-
-	![IMAGEScreenshot2025-05-01at9.45.20AMcopy.png](./media/Screenshot2025-05-01at9.45.20AMcopy.png)
-
-    use your Azure Portal username in the Email, phone, or Skype field:
-
-    ![IMAGEScreenshot2025-05-01at9.45.20AM.png](./media/Screenshot2025-05-01at9.45.20AM.png)
-
-1. Then, click the **blue Next button** after the username has been entered
-
-	![IMAGEScreenshot2025-05-01at9.49.04AM.png](./media/Screenshot2025-05-01at9.49.04AM.png)
-
-1. On the next step/dialog box, use the **password field** and enter your password:
-
-    ![IMAGEA picture of using the password field to enter the azure user password](./media/Screenshot2024-10-21at1.34.45PM.png)
-
-1. Then, click the **blue Sign in button** after the password has been entered
-
-    ![IMAGEA picture of clicking the blue Sign in button after the password has been entered](./media/Screenshot2024-10-21at1.34.54PM.png)
-
-1. You will be then asked if you would like to **Automatically sign in to all desktop apps and websites on this device?**. Click the **blue Yes, all apps button**.
- 
-	![IMAGEScreenshot2025-05-01at9.53.19AM.png](./media/Screenshot2025-05-01at9.53.19AM.png)
-
-1. After signing you into all apps, click the **blue Done button** in the **You're all set!** dialog box.
-
-	![IMAGEScreenshot2025-05-01at9.56.33AM.png](./media/Screenshot2025-05-01at9.56.33AM.png)
-
-1. Back in the SQL **Connection Dialog** tab, 
-
-	![IMAGEScreenshot2025-05-01at10.01.02AM.png](./media/Screenshot2025-05-01at10.01.02AM.png)
-
-    find the **Database dropdown** and select **SampleDB**.
-
-	![IMAGEScreenshot2025-05-01at10.02.31AM.png](./media/Screenshot2025-05-01at10.02.31AM.png)
-
-1. Next, use the following dropdown called **Authentication type** and select **Microsoft Entra ID - Universal with MFA support**
-
-	![IMAGEScreenshot2025-05-01at10.05.37AM.png](./media/Screenshot2025-05-01at10.05.37AM.png)
-
-1. Once selected, a **Sign in button** will be available. Click the **Sign in button**.
-
-	![IMAGEScreenshot2025-05-01at10.07.23AM.png](./media/Screenshot2025-05-01at10.07.23AM.png)
-
-1. A **browser page** will appear asking you to **Pick an account**. Select your account that you want to use by clicking on it.
-
-	![IMAGEScreenshot2025-05-01at10.07.46AM.png](./media/Screenshot2025-05-01at10.07.46AM.png)
-	
-1. On the **mssql for Visual Studio Code** page, you will get confirmation that **Your account was added successfully!** and that **You may now close this page.**
-
-	![IMAGEScreenshot2025-05-01at10.07.57AM.png](./media/Screenshot2025-05-01at10.07.57AM.png)
-
-1. Close the page by **closing the tab** by clicking the X on the tab in the browser
-
-	![IMAGEScreenshot2025-05-01at10.08.09AM.png](./media/Screenshot2025-05-01at10.08.09AM.png)
-
-    and then minimize the browser by **clicking the minimize button** on the right upper side.
-
-	![IMAGEScreenshot2025-05-01at10.08.20AM.png](./media/Screenshot2025-05-01at10.08.20AM.png)
-
-1. Back in the SQL **Connection Dialog** tab, click the **blue Connect button** on the lower right side.
-
-	![IMAGEScreenshot2025-05-01at10.08.32AM.png](./media/Screenshot2025-05-01at10.08.32AM.png)
-
-1. You are now **connected** to the **Azure SQL Database**!
-
-	![IMAGEScreenshot2025-05-01at10.20.14AM.png](./media/Screenshot2025-05-01at10.20.14AM.png)
+1. You are now **connected** to the **SQL Database**!
 
 1. **Right click** on the database name in the **SQL Extension** and select **New Query** 
 	
