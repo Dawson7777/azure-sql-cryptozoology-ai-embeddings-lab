@@ -1,4 +1,4 @@
-# Welcome to Lab 365: Build new AI applications with Azure SQL Database
+# Welcome to Lab 365: Build new AI applications with Azure SQL Database - Azure SQL Edition
 
 # 1. Connect to the free Azure SQL Database with Visual Studio Code
 
@@ -242,7 +242,7 @@ The next step in the lab is to create database scoped credentials which contain 
     -- Create the database scoped credential for Azure AI Content Understanding
     if not exists(select * from sys.database_scoped_credentials where [name] = 'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/')
     begin
-        create database scoped credential [@lab.Variable(openaiApiEndpoint)contentunderstanding/]
+        create database scoped credential [https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/]
         with identity = 'HTTPEndpointHeaders', secret = '{"Ocp-Apim-Subscription-Key":"YOUR_AZURE_OPENAPI_KEY_HERE","Ocp-Apim-Subscription-Region":"westus"}';
     end
     go
@@ -357,12 +357,14 @@ The next step in the lab is to create database scoped credentials which contain 
 
 1. Now that the **video analyzer has been created** and is ready to be used, we can use another REST service to provide it with a video to analyze. This video is in Azure Storage so all we need to do is provide the analyzer with a URL.
 
+    Remmeber to replace **SAS_URL_OF_FILE_IN_BLOB_STORAGE** with the URL to the file in Azure Blob Storage.
+
 	**Copy and paste** the following code into an **empty query sheet** in VS Code:
 
 	```SQL
     declare @url nvarchar(4000) = N'https://YOUR_AZURE_OPENAPI_ENDPOINT_HERE/contentunderstanding/analyzers/cryptidAnalyzer:analyze?api-version=2024-12-01-preview';
     declare @payload nvarchar(max) = N'{
-    "url": "@lab.Variable(sqlServerName)"}';
+    "url": "SAS_URL_OF_FILE_IN_BLOB_STORAGE"}';
     declare @ret int, @response nvarchar(max);
 
     exec @ret = sp_invoke_external_rest_endpoint

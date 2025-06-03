@@ -12,7 +12,9 @@ Welcome, Investigator, to the **Cryptid Research Initiative**-a clandestine alli
 
 Welcome to the front lines of cryptozoological discovery-remember, secrecy and scientific rigor are the cornerstones of our society.
 
-**Lab Guide is [here](./labGuide.md).**
+**Lab Guide for Azure SQL is [here](./labGuide.md).**
+
+**Lab Guide for SQL Server 2025 is [here](./labGuide_SQL25.md).**
 
 ## Prerequisites
 
@@ -28,6 +30,7 @@ Welcome to the front lines of cryptozoological discovery-remember, secrecy and s
 - VS Code with the MSSQL Extension
 - [MSSQL Python Driver](https://github.com/microsoft/mssql-python)
 - Install python libraries via the requirements.txt file
+- Place the yeti.mp4 video in an Azure Blob Storage container and generate a SAS URL
 
 ## Key Learning Objectives
 
@@ -50,4 +53,6 @@ Welcome to the front lines of cryptozoological discovery-remember, secrecy and s
 
 - lab_files: Contains the files for running the ChainLit app
 - media: The image files for the labGuide
-- labGuide.md: The workshop guide
+- labGuide.md: The workshop guide for Azure SQL
+- labGuide_SQL25.md: The workshop guide for SQL Server 2025
+- yeti.mp4: The video to be analyzed
