@@ -168,6 +168,8 @@ The next step in the lab is to create database scoped credentials which contain 
 1. Using an empty query sheet in VS Code, copy and paste the following code:
 
     ```SQL
+    EXECUTE sp_configure 'external rest endpoint enabled', 1;
+    RECONFIGURE WITH OVERRIDE;
 
     -- Create a master key for the database
     if not exists(select * from sys.symmetric_keys where [name] = '##MS_DatabaseMasterKey##')
